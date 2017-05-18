@@ -1,0 +1,14 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %> <!-- uri 에 해당하는 태그를 c라는 접두어를 통해 사용할 수 있다 -->
+	<a href="/">HOME</a>
+	<c:choose>
+		<c:when test="${not empty userId}">
+			<a href="/users/logout">로그아웃</a>
+			<a href="#">개인정보 수정</a>
+		</c:when>
+		<c:otherwise>
+			<a href="/login.jsp">로그인</a>
+			<a href="/form.jsp">회원가입</a>
+		</c:otherwise>
+	</c:choose>

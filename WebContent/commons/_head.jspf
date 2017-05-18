@@ -1,0 +1,12 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<title>Servlet/JSP Test</title>
+
+<style>
+	body {
+		padding-top: 40px;
+	}
+</style>
+
+<!-- 중복을 제거하는 것이 좋다. jsp 뒤에 f를 붙이는 것이 관용적 -->

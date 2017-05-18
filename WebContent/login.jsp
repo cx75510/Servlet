@@ -8,7 +8,7 @@
 <body>
 	<%@include file="../commons/_top.jspf"%>
 	
-	<h1>로그인입니다.</h1>
+	<h1>로그인</h1>
 	<form action="/users/login" method="post">
 		<c:if test="${not empty errorMessage }">
 			<div class="control-group">

@@ -25,51 +25,104 @@ public class UserDAO {
 
 	public void addUser(User user) throws SQLException {
 		String sql = "insert into users values(?,?,?,?)"; // sql 쿼리
-		PreparedStatement pstmt = getConnection().prepareStatement(sql);
-		
-		pstmt.setString(1,user.getUserId());
-		pstmt.setString(2,user.getPassword());
-		pstmt.setString(3,user.getName());
-		pstmt.setString(4,user.getEmail());
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try{
+			conn = getConnection();
+			pstmt = getConnection().prepareStatement(sql);
+			
+			pstmt.setString(1,user.getUserId());
+			pstmt.setString(2,user.getPassword());
+			pstmt.setString(3,user.getName());
+			pstmt.setString(4,user.getEmail());
 
-		pstmt.executeUpdate(); // 쿼리를 실행한다.
-
+			pstmt.executeUpdate(); // 쿼리를 실행한다
+		} finally{
+			if(pstmt != null){
+				pstmt.close();
+			}
+			if(conn != null){
+				conn.close();
+			}
+		}
 	}
 
 	public User findByUserId(String userId) throws SQLException {
 		String sql = "SELECT * FROM users WHERE userId = ?";
-		PreparedStatement pstmt = getConnection().prepareStatement(sql);
 		
-		pstmt.setString(1, userId);
-		
-		ResultSet rs = pstmt.executeQuery();
-		
-		if(!rs.next()) { //예외로직 먼저 처리한 후에 나머지를 리턴하는 방식으로 코딩하면 소스양을 좀더 줄일 수 있다.
-			return null;
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try{
+			conn = getConnection();
+			pstmt = getConnection().prepareStatement(sql);
+			pstmt.setString(1, userId);
+			
+			rs = pstmt.executeQuery();
+			
+			if(!rs.next()) { //예외로직 먼저 처리한 후에 나머지를 리턴하는 방식으로 코딩하면 소스양을 좀더 줄일 수 있다.
+				return null;
+			}
+			
+			return new User(rs.getString("userId"),
+					rs.getString("password"),
+					rs.getString("name"),
+					rs.getString("email"));
+		}finally{
+			if(pstmt != null){
+				pstmt.close();
+			}
+			if(conn != null){
+				conn.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
 		}
-		
-		return new User(rs.getString("userId"), rs.getString("password"), rs.getString("name"), rs.getString("email"));
 	}
 
 	public void removeUser(String userId) throws SQLException {
 		String sql = "delete from USERS where userId = ?";
-		PreparedStatement pstmt = getConnection().prepareStatement(sql);
-		
-		pstmt.setString(1, userId);
-		
-		pstmt.executeUpdate();
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try{
+			conn = getConnection();
+			pstmt = getConnection().prepareStatement(sql);
+			
+			pstmt.setString(1, userId);
+
+			pstmt.executeUpdate(); // 쿼리를 실행한다
+		} finally{
+			if(pstmt != null){
+				pstmt.close();
+			}
+			if(conn != null){
+				conn.close();
+			}
+		}
 	}
 
 	public void updateUser(User user) throws SQLException {
 		String sql = "update USERS set password= ? , name= ?, email= ? where userId=?";  // sql 쿼리
-		PreparedStatement pstmt = getConnection().prepareStatement(sql);
-		
-		pstmt.setString(1,user.getPassword());
-		pstmt.setString(2,user.getName());
-		pstmt.setString(3,user.getEmail());
-		pstmt.setString(4,user.getUserId());
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		try{
+			conn = getConnection();
+			pstmt = getConnection().prepareStatement(sql);
+			
+			pstmt.setString(1,user.getPassword());
+			pstmt.setString(2,user.getName());
+			pstmt.setString(3,user.getEmail());
+			pstmt.setString(4,user.getUserId());
 
-		pstmt.executeUpdate(); // 쿼리를 실행한다.
-		
+			pstmt.executeUpdate(); // 쿼리를 실행한다.
+		} finally{
+			if(pstmt != null){
+				pstmt.close();
+			}
+			if(conn != null){
+				conn.close();
+			}
+		}
 	}
 }

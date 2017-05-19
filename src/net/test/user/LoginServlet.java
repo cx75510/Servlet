@@ -12,15 +12,17 @@ import javax.servlet.http.HttpSession;
 
 @WebServlet("/users/login")
 public class LoginServlet extends HttpServlet {
+	public static final String SESSION_USER_ID = "userId";	//중복이 발생할수 있고 코드를 확인해서 알아봐야함
+
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("userId");
+		String userId = request.getParameter(SESSION_USER_ID);
 		String password = request.getParameter("password");
 		
 		try{
 			User.login(userId, password);
 			HttpSession session = request.getSession();
-			session.setAttribute("userId", userId); // 세션scope 에 데이터를 저장하는 과정을 통해 데이터 유지 index_jsp.java 참고
+			session.setAttribute(SESSION_USER_ID, userId); // 세션scope 에 데이터를 저장하는 과정을 통해 데이터 유지 index_jsp.java 참고
 			response.sendRedirect("/");
 			
 		} catch(UserNotFoundException e){
@@ -38,20 +40,3 @@ public class LoginServlet extends HttpServlet {
 	}
 }
 
-
-/* 
- * redirect, forward 차이
- * 
- * 1) redirect 
- * 클라이언트,서버 간의 두번의 요청, 응답이 생긴다
- * a.jsp 에서 데이터를 담아서 b.jsp 로 가져오는 것이 불가능하다.
- * http protocol 이 상태를 공유할 수 없는 문제 
- * 아예 url 이 b.jsp로 이동해버린다.
- * 
- * 2) forward
- * redirect도 안되는 것을 할때 => 데이터를 전달하려면 무조건 forward 방식을 이용해야 한다. 
- * 서버에서 클라이언트를 거치지 않고 b.jsp로 바로 이동을 하기 때문에 가능
- * a 결과값을 b에 전달하고 싶다
- * url이 b.jsp 에 있는 것이 아니라 a에 머물러 있다. 응답결과만 b.jsp로 동작을 한다.
- * 
- */

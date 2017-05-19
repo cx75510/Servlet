@@ -9,12 +9,12 @@ import java.sql.ResultSet;
 public class UserDAO {
 
 	public Connection getConnection() {
-		String url = "jdbc:mysql://localhost:3306/slipp_dev"; // 사용하려는 데이터베이스명을 포함한 URL 기술. tcp/ip 소켓을 이용한다
+		String url = "jdbc:mysql://localhost/slipp"; // 사용하려는 데이터베이스명을 포함한 URL 기술. tcp/ip 소켓을 이용한다
 		String id = "root"; // 사용자 계정
-		String pw = "asdf1234"; // 사용자 계정의 패스워드
+		String pw = "sungho"; // 사용자 계정의 패스워드
 
 		try {
-			Class.forName("com.mysql.cj.jdbc.Driver"); // 데이터베이스와 연동하기 위해 DriverManager에 등록한다.
+			Class.forName("com.mysql.jdbc.Driver"); // 데이터베이스와 연동하기 위해 DriverManager에 등록한다.
 			return DriverManager.getConnection(url,id,pw); // DriverManager 객체로부터 Connection 객체를 얻어온다.
 			
 		} catch(Exception e){

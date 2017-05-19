@@ -17,6 +17,9 @@ public class User {
 		this.email = email;
 	}
 	
+	public User() {
+	}
+
 	public String getUserId() {
 		return userId;
 	}

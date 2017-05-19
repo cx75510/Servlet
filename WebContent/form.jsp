@@ -6,39 +6,68 @@
 </head>
 <body>
 	<%@include file="../commons/_top.jspf"%>
+	<div>
+	<c:choose>
+	<c:when test="${empty user.userId }">
 	<h1>회원가입</h1>
- 	<form action="/users/save" method="post">
+	</c:when>
+	<c:otherwise>
+	<h1>개인정보수정</h1>
+	</c:otherwise>
+	</c:choose>
+	</div>
+		<c:set var="actionUrl" value="/users/create"/>
+		<c:if test="${not empty user.userId }">
+		<c:set var="actionUrl" value="/users/update"/>
+		</c:if>
+ 	<form action=${actionUrl } method="post">
  		<div class="control-group">
  			<label class="control-label" for="userId">사용자 아이디</label>
  			<div class="controls">
- 				<input type="text" name="userId" value=""/>
+	 			<c:choose>
+	 			<c:when test="${empty user.userId }">
+	 			<input type="text" name="userId" value="${user.userId }"/>
+	 			</c:when>
+	 			<c:otherwise>
+	 			<input type="hidden" name="userId" value="${user.userId }"/>
+	 			${user.userId }
+	 			</c:otherwise>
+	 			</c:choose>
  			</div>
  		</div>
  		<div class="control-group">
  			<label class="control-label" for="password">비밀번호</label>
  			<div class="controls">
- 				<input type="password" name="password" value=""/>
+ 				<input type="password" name="password" value="${user.password }"/>
  			</div>
  		</div>
  		<div class="control-group">
  			<label class="control-label" for="name">이름</label>
  			<div class="controls">
- 				<input type="text" name="name" value=""/>
+ 				<input type="text" name="name" value="${user.name }"/>
  			</div>
  		</div>
  		<div class="control-group">
  			<label class="control-label" for="email">이메일</label>
  			<div class="controls">
- 				<input type="text" name="email" value=""/>
+ 				<input type="text" name="email" value="${user.email }"/>
  			</div>
  		</div>
  		<div class="control-group">
  			<div class="controls">
- 				<button type="submit" class="btn btn-primary">회원가입</button>
+ 				<button type="submit" class="btn btn-primary">
+ 				<c:choose>
+	 			<c:when test="${empty user.userId }">
+	 			회원가입
+	 			</c:when>
+	 			<c:otherwise>
+	 			수정
+	 			</c:otherwise>
+	 			</c:choose>
+ 				</button>
  			</div>
  		</div>
  	</form>
-
 </body>
 </html>
 

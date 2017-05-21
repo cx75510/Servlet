@@ -1,6 +1,7 @@
 package net.test.user;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Set;
 
@@ -13,18 +14,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
+import org.apache.commons.beanutils.BeanUtilsBean;
+
 import net.test.support.MyValidatorFactory;
 
 @WebServlet("/users/create")
 public class CreateUserServlet extends HttpServlet {
 	@Override
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String userId = request.getParameter("userId");
-		String password = request.getParameter("password");
-		String name = request.getParameter("name");
-		String email = request.getParameter("email");
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		User user = new User();
+		try {
+			BeanUtilsBean.getInstance().populate(user, request.getParameterMap());
+		} catch (IllegalAccessException | InvocationTargetException e1) {
+			throw new ServletException(e1);
+		}
 		
-		User user = new User(userId, password, name, email);
 		Validator validator = MyValidatorFactory.createValidator();
 		/*
 		 * 회원가입에서 아이디와 비밀번호를 입력하고 이름을 입력하지 않았을 때

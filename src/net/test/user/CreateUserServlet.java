@@ -29,6 +29,7 @@ public class CreateUserServlet extends HttpServlet {
 		/*
 		 * 회원가입에서 아이디와 비밀번호를 입력하고 이름을 입력하지 않았을 때
 		 * userID가 이미 존재해서 개인정보 수정으로 인식함
+		 * user를 넘기기때문에 
 		 */
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 		if(constraintViolations.size() > 0){
@@ -37,7 +38,6 @@ public class CreateUserServlet extends HttpServlet {
 			forwardJSP(request, response, errorMessage);
 			return;
 		}
-		
 		UserDAO userDAO = new UserDAO();
 		try {
 			userDAO.addUser(user);

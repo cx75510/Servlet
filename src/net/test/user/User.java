@@ -2,15 +2,31 @@ package net.test.user;
 
 import java.sql.SQLException;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
+
 import com.google.gson.annotations.Expose;
 
 public class User {
 	@Expose
+	@NotNull
+	@Size(min = 4, max = 12)
 	private String userId;
+	
+	@Expose
+	@NotNull
+	@Size(min = 4, max = 12)
 	private String password;
+	
 	@Expose
+	@NotNull
+	@Size(min = 2, max = 10)
 	private String name;
+	
 	@Expose
+	@Email
 	private String email;
 
 	// »ý¼ºÀÚ

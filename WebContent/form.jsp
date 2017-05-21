@@ -21,6 +21,11 @@
 		<c:set var="actionUrl" value="/users/update"/>
 		</c:if>
  	<form action=${actionUrl } method="post">
+ 	<c:if test="${not empty errorMessage }">
+			<div class="control-group">
+	 			<label class="error" for="userId">${errorMessage }</label>
+	 		</div>
+		</c:if>
  		<div class="control-group">
  			<label class="control-label" for="userId">사용자 아이디</label>
  			<div class="controls">

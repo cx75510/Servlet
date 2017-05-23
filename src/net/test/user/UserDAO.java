@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.test.support.jdbcTemplate;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -14,13 +16,13 @@ public class UserDAO {
 	private static final Logger logger = LoggerFactory.getLogger(JavaBeanUtilsTest.class);
 
 	public Connection getConnection() {
-		String url = "jdbc:mysql://localhost/slipp"; // ����Ϸ��� �����ͺ��̽����� ������ URL ���. tcp/ip ������ �̿��Ѵ�
-		String id = "root"; // ����� ����
-		String pw = "sungho"; // ����� ������ �н�����
+		String url = "jdbc:mysql://localhost/slipp";
+		String id = "root";
+		String pw = "sungho";
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); // �����ͺ��̽��� �����ϱ� ���� DriverManager�� ����Ѵ�.
-			return DriverManager.getConnection(url,id,pw); // DriverManager ��ü�κ��� Connection ��ü�� ���´�.
+			Class.forName("com.mysql.jdbc.Driver");
+			return DriverManager.getConnection(url,id,pw);
 			
 		} catch(Exception e){
 			logger.debug(e.getMessage());
@@ -29,27 +31,18 @@ public class UserDAO {
 	}
 
 	public void addUser(User user) throws SQLException {
-		String sql = "insert into users values(?,?,?,?)"; // sql ����
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try{
-			conn = getConnection();
-			pstmt = getConnection().prepareStatement(sql);
-			
-			pstmt.setString(1,user.getUserId());
-			pstmt.setString(2,user.getPassword());
-			pstmt.setString(3,user.getName());
-			pstmt.setString(4,user.getEmail());
+		jdbcTemplate template = new jdbcTemplate(){
 
-			pstmt.executeUpdate(); // ������ �����Ѵ�
-		} finally{
-			if(pstmt != null){
-				pstmt.close();
+			@Override
+			public void setParameters(PreparedStatement pstmt) throws SQLException {
+				pstmt.setString(1,user.getUserId());
+				pstmt.setString(2,user.getPassword());
+				pstmt.setString(3,user.getName());
+				pstmt.setString(4,user.getEmail());
 			}
-			if(conn != null){
-				conn.close();
-			}
-		}
+		};
+		String sql = "insert into users values(?,?,?,?)";
+		template.executeUpdate(sql);
 	}
 
 	public User findByUserId(String userId) throws SQLException {
@@ -88,46 +81,29 @@ public class UserDAO {
 
 	public void removeUser(String userId) throws SQLException {
 		String sql = "delete from USERS where userId = ?";
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try{
-			conn = getConnection();
-			pstmt = getConnection().prepareStatement(sql);
+		
+		jdbcTemplate template = new jdbcTemplate() {
 			
-			pstmt.setString(1, userId);
-
-			pstmt.executeUpdate(); // ������ �����Ѵ�
-		} finally{
-			if(pstmt != null){
-				pstmt.close();
+			@Override
+			public void setParameters(PreparedStatement pstmt) throws SQLException {
+				pstmt.setString(1, userId);
 			}
-			if(conn != null){
-				conn.close();
-			}
-		}
+		};
+		template.executeUpdate(sql);
 	}
 
 	public void updateUser(User user) throws SQLException {
-		String sql = "update USERS set password= ? , name= ?, email= ? where userId=?";  // sql ����
-		Connection conn = null;
-		PreparedStatement pstmt = null;
-		try{
-			conn = getConnection();
-			pstmt = getConnection().prepareStatement(sql);
+		jdbcTemplate template = new jdbcTemplate() {
 			
-			pstmt.setString(1,user.getPassword());
-			pstmt.setString(2,user.getName());
-			pstmt.setString(3,user.getEmail());
-			pstmt.setString(4,user.getUserId());
-
-			pstmt.executeUpdate(); // ������ �����Ѵ�.
-		} finally{
-			if(pstmt != null){
-				pstmt.close();
+			@Override
+			public void setParameters(PreparedStatement pstmt) throws SQLException {
+				pstmt.setString(1,user.getPassword());
+				pstmt.setString(2,user.getName());
+				pstmt.setString(3,user.getEmail());
+				pstmt.setString(4,user.getUserId());
 			}
-			if(conn != null){
-				conn.close();
-			}
-		}
+		};
+		String sql = "update USERS set password= ? , name= ?, email= ? where userId=?";  // sql ����
+		template.executeUpdate(sql);
 	}
 }

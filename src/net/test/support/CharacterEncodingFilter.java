@@ -19,7 +19,7 @@ public class CharacterEncodingFilter implements Filter{
 	
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException{
-		logger.debug("character encoding filter init!");
+		logger.info("character encoding filter init!");
 	}
 	
 	@Override

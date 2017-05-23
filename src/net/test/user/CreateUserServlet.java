@@ -15,11 +15,15 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.test.support.MyValidatorFactory;
 
 @WebServlet("/users/create")
 public class CreateUserServlet extends HttpServlet {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CreateUserServlet.class);
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -30,12 +34,10 @@ public class CreateUserServlet extends HttpServlet {
 			throw new ServletException(e1);
 		}
 		
+		logger.debug("User : {}", user);
+	
 		Validator validator = MyValidatorFactory.createValidator();
-		/*
-		 * 회원가입에서 아이디와 비밀번호를 입력하고 이름을 입력하지 않았을 때
-		 * userID가 이미 존재해서 개인정보 수정으로 인식함
-		 * user를 넘기기때문에 
-		 */
+
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 		if(constraintViolations.size() > 0){
 			request.setAttribute("user", user);
@@ -49,7 +51,7 @@ public class CreateUserServlet extends HttpServlet {
 		} catch (SQLException e) {
 		}
 		
-		response.sendRedirect("/"); // redirect 방식으로 이동
+		response.sendRedirect("/");
 	}
 	private void forwardJSP(HttpServletRequest request, HttpServletResponse response, String errorMessage)
 			throws ServletException, IOException {

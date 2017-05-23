@@ -3,28 +3,33 @@ package net.test.user;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 public class UserDAO {
+	private static final Logger logger = LoggerFactory.getLogger(JavaBeanUtilsTest.class);
 
 	public Connection getConnection() {
-		String url = "jdbc:mysql://localhost/slipp"; // »ç¿ëÇÏ·Á´Â µ¥ÀÌÅÍº£ÀÌ½º¸íÀ» Æ÷ÇÔÇÑ URL ±â¼ú. tcp/ip ¼ÒÄÏÀ» ÀÌ¿ëÇÑ´Ù
-		String id = "root"; // »ç¿ëÀÚ °èÁ¤
-		String pw = "sungho"; // »ç¿ëÀÚ °èÁ¤ÀÇ ÆÐ½º¿öµå
+		String url = "jdbc:mysql://localhost/slipp"; // ï¿½ï¿½ï¿½ï¿½Ï·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ URL ï¿½ï¿½ï¿½. tcp/ip ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¿ï¿½ï¿½Ñ´ï¿½
+		String id = "root"; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+		String pw = "sungho"; // ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ð½ï¿½ï¿½ï¿½ï¿½ï¿½
 
 		try {
-			Class.forName("com.mysql.jdbc.Driver"); // µ¥ÀÌÅÍº£ÀÌ½º¿Í ¿¬µ¿ÇÏ±â À§ÇØ DriverManager¿¡ µî·ÏÇÑ´Ù.
-			return DriverManager.getConnection(url,id,pw); // DriverManager °´Ã¼·ÎºÎÅÍ Connection °´Ã¼¸¦ ¾ò¾î¿Â´Ù.
+			Class.forName("com.mysql.jdbc.Driver"); // ï¿½ï¿½ï¿½ï¿½ï¿½Íºï¿½ï¿½Ì½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï±ï¿½ ï¿½ï¿½ï¿½ï¿½ DriverManagerï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
+			return DriverManager.getConnection(url,id,pw); // DriverManager ï¿½ï¿½Ã¼ï¿½Îºï¿½ï¿½ï¿½ Connection ï¿½ï¿½Ã¼ï¿½ï¿½ ï¿½ï¿½ï¿½Â´ï¿½.
 			
 		} catch(Exception e){
-			System.out.println(e.getMessage());
+			logger.debug(e.getMessage());
 			return null;
 		}
 	}
 
 	public void addUser(User user) throws SQLException {
-		String sql = "insert into users values(?,?,?,?)"; // sql Äõ¸®
+		String sql = "insert into users values(?,?,?,?)"; // sql ï¿½ï¿½ï¿½ï¿½
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try{
@@ -36,7 +41,7 @@ public class UserDAO {
 			pstmt.setString(3,user.getName());
 			pstmt.setString(4,user.getEmail());
 
-			pstmt.executeUpdate(); // Äõ¸®¸¦ ½ÇÇàÇÑ´Ù
+			pstmt.executeUpdate(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 		} finally{
 			if(pstmt != null){
 				pstmt.close();
@@ -60,7 +65,7 @@ public class UserDAO {
 			
 			rs = pstmt.executeQuery();
 			
-			if(!rs.next()) { //¿¹¿Ü·ÎÁ÷ ¸ÕÀú Ã³¸®ÇÑ ÈÄ¿¡ ³ª¸ÓÁö¸¦ ¸®ÅÏÇÏ´Â ¹æ½ÄÀ¸·Î ÄÚµùÇÏ¸é ¼Ò½º¾çÀ» Á»´õ ÁÙÀÏ ¼ö ÀÖ´Ù.
+			if(!rs.next()) { //ï¿½ï¿½ï¿½Ü·ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½Ä¿ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Úµï¿½ï¿½Ï¸ï¿½ ï¿½Ò½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ö´ï¿½.
 				return null;
 			}
 			
@@ -91,7 +96,7 @@ public class UserDAO {
 			
 			pstmt.setString(1, userId);
 
-			pstmt.executeUpdate(); // Äõ¸®¸¦ ½ÇÇàÇÑ´Ù
+			pstmt.executeUpdate(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½
 		} finally{
 			if(pstmt != null){
 				pstmt.close();
@@ -103,7 +108,7 @@ public class UserDAO {
 	}
 
 	public void updateUser(User user) throws SQLException {
-		String sql = "update USERS set password= ? , name= ?, email= ? where userId=?";  // sql Äõ¸®
+		String sql = "update USERS set password= ? , name= ?, email= ? where userId=?";  // sql ï¿½ï¿½ï¿½ï¿½
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try{
@@ -115,7 +120,7 @@ public class UserDAO {
 			pstmt.setString(3,user.getEmail());
 			pstmt.setString(4,user.getUserId());
 
-			pstmt.executeUpdate(); // Äõ¸®¸¦ ½ÇÇàÇÑ´Ù.
+			pstmt.executeUpdate(); // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ñ´ï¿½.
 		} finally{
 			if(pstmt != null){
 				pstmt.close();

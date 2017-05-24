@@ -17,12 +17,6 @@ public class UserDAOTest {
 	}
 	
 	@Test
-	public void connection() {
-		Connection con = userDao.getConnection();
-		assertNotNull(con); 
-	}
-	
-	@Test
 	public void crud() throws Exception {
 		User user = UserTest.TEST_USER;
 		userDao.removeUser(user.getUserId());

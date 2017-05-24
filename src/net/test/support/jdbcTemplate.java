@@ -3,6 +3,7 @@ package net.test.support;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import org.slf4j.Logger;
@@ -12,17 +13,15 @@ import net.test.user.JavaBeanUtilsTest;
 import net.test.user.User;
 import net.test.user.UserDAO;
 
-public abstract class jdbcTemplate {
-	private static final Logger logger = LoggerFactory.getLogger(JavaBeanUtilsTest.class);
+public class jdbcTemplate {
 
-	public void executeUpdate(String sql) throws SQLException {
+	public void executeUpdate(String sql, PreparedStatementSetter pss) throws SQLException {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
 			conn = ConnectionManager.getConnection();
 			pstmt = conn.prepareStatement(sql);
-
-			setParameters(pstmt);
+			pss.setParameters(pstmt);
 
 			pstmt.executeUpdate();
 		} finally {
@@ -34,6 +33,33 @@ public abstract class jdbcTemplate {
 			}
 		}
 	}
-
-	public abstract void setParameters(PreparedStatement pstmt) throws SQLException;
+	
+	public Object executeQuery(String sql,PreparedStatementSetter pss, RowMapper rm) throws SQLException {
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		try{
+			conn = ConnectionManager.getConnection();
+			pstmt = conn.prepareStatement(sql);
+			pss.setParameters(pstmt);
+			
+			rs = pstmt.executeQuery();
+			
+			if(!rs.next()) {
+				return null;
+			}
+			
+			return rm.mapRow(rs);
+		}finally{
+			if(pstmt != null){
+				pstmt.close();
+			}
+			if(conn != null){
+				conn.close();
+			}
+			if(rs != null){
+				rs.close();
+			}
+		}
+	}
 }

@@ -1,4 +1,4 @@
-package net.test.user;
+package net.test.user.web;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -14,7 +14,10 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.test.support.CharacterEncodingFilter;
+import core.CharacterEncodingFilter;
+import core.SessionUtils;
+import net.test.user.User;
+import net.test.user.UserDAO;
 
 @WebServlet("/users/updateForm")
 public class UpdateFormUserServlet extends HttpServlet {

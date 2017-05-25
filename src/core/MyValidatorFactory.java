@@ -1,4 +1,4 @@
-package net.test.support;
+package core;
 
 import javax.validation.Validation;
 import javax.validation.Validator;

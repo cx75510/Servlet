@@ -1,4 +1,4 @@
-package net.test.user;
+package net.test.user.web;
 
 import java.io.IOException;
 

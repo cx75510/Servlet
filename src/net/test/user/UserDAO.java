@@ -2,8 +2,8 @@ package net.test.user;
 
 import java.util.List;
 
-import net.test.support.jdbc.RowMapper;
-import net.test.support.jdbc.jdbcTemplate;
+import core.jdbc.RowMapper;
+import core.jdbc.jdbcTemplate;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

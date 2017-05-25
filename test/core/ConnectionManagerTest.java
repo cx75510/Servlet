@@ -1,4 +1,4 @@
-package net.test.support;
+package core;
 
 import static org.junit.Assert.*;
 
@@ -6,7 +6,7 @@ import java.sql.Connection;
 
 import org.junit.Test;
 
-import net.test.support.jdbc.ConnectionManager;
+import core.jdbc.ConnectionManager;
 
 public class ConnectionManagerTest {
 

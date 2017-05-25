@@ -1,4 +1,4 @@
-package net.test.user;
+package net.test.user.web;
 
 import java.io.IOException;
 
@@ -8,6 +8,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.test.user.User;
 
 @WebServlet("/users/createForm")
 public class CreateFormUserServlet extends HttpServlet{

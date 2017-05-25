@@ -1,4 +1,4 @@
-package net.test.user;
+package net.test.user.web;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -17,7 +17,10 @@ import javax.validation.Validator;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 
-import net.test.support.MyValidatorFactory;
+import core.MyValidatorFactory;
+import core.SessionUtils;
+import net.test.user.User;
+import net.test.user.UserDAO;
 
 @WebServlet("/users/update")
 public class UpdateUserServlet extends HttpServlet{

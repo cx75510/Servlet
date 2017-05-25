@@ -1,4 +1,4 @@
-package net.test.support;
+package core;
 
 import java.io.IOException;
 

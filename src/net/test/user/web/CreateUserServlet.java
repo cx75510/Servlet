@@ -1,4 +1,4 @@
-package net.test.user;
+package net.test.user.web;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -18,7 +18,9 @@ import org.apache.commons.beanutils.BeanUtilsBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.test.support.MyValidatorFactory;
+import core.MyValidatorFactory;
+import net.test.user.User;
+import net.test.user.UserDAO;
 
 @WebServlet("/users/create")
 public class CreateUserServlet extends HttpServlet {

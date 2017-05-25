@@ -17,21 +17,17 @@ public class UserDAO {
 	}
 
 	public User findByUserId(String userId){
-		RowMapper<User> rm = new RowMapper<User>(){
-
-			@Override
-			public User mapRow(ResultSet rs) throws SQLException{
-				return new User(
-						rs.getString("userId"),
-						rs.getString("password"),
-						rs.getString("name"),
-						rs.getString("email"));
-			}
-		};
+		RowMapper<User> rm = rs ->
+			new User(
+					rs.getString("userId"),
+					rs.getString("password"),
+					rs.getString("name"),
+					rs.getString("email"));
+		
 			
 		jdbcTemplate template = new jdbcTemplate();
 		String sql = "SELECT * FROM users WHERE userId = ?";
-		return template.executeQuery(sql,rm,userId);
+		return template.executeQuery(sql, rm ,userId);
 	}
 
 	public void removeUser(String userId){
@@ -48,17 +44,12 @@ public class UserDAO {
 	}
 
 	public List<User> findUsers(){
-		RowMapper<User> rm = new RowMapper<User>(){
-
-			@Override
-			public User mapRow(ResultSet rs) throws SQLException{
-				return new User(
-						rs.getString("userId"),
-						rs.getString("password"),
-						rs.getString("name"),
-						rs.getString("email"));
-			}
-		};
+		RowMapper<User> rm = rs ->
+		new User(
+				rs.getString("userId"),
+				rs.getString("password"),
+				rs.getString("name"),
+				rs.getString("email"));
 			
 		jdbcTemplate template = new jdbcTemplate();
 		String sql = "SELECT * FROM USERS";

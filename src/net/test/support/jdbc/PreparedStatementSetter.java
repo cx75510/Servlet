@@ -1,4 +1,4 @@
-package net.test.support;
+package net.test.support.jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;

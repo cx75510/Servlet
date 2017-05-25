@@ -1,4 +1,4 @@
-package net.test.support;
+package net.test.support.jdbc;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -9,7 +9,7 @@ import java.util.List;
 
 public class jdbcTemplate {
 
-	public void executeUpdate(String sql, PreparedStatementSetter pss) throws SQLException {
+	public void executeUpdate(String sql, PreparedStatementSetter pss) throws DataAccessException{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		try {
@@ -18,21 +18,29 @@ public class jdbcTemplate {
 			pss.setParameters(pstmt);
 
 			pstmt.executeUpdate();
-		} finally {
-			if (pstmt != null) {
-				pstmt.close();
-			}
-			if (conn != null) {
-				conn.close();
+		} catch(SQLException e){
+			throw new DataAccessException();
+		}
+			finally {
+				try{
+				if (pstmt != null) {
+					pstmt.close();
+				}
+				if (conn != null) {
+					conn.close();
+				}
+				
+			} catch(SQLException e){
+				throw new DataAccessException();
 			}
 		}
 	}
 	
-	public void executeUpdate(String sql, Object... parameters) throws SQLException {
+	public void executeUpdate(String sql, Object... parameters){
 		executeUpdate(sql, createPreparedStatementSetter(parameters));
 	}
 	
-	public <T> T executeQuery(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws SQLException {
+	public <T> T executeQuery(String sql, RowMapper<T> rm, PreparedStatementSetter pss){
 		List<T> list = list(sql, rm, pss);
 		if(list.isEmpty()){
 			return null;
@@ -40,11 +48,11 @@ public class jdbcTemplate {
 		return list.get(0);
 	}
 	
-	public <T> T executeQuery(String sql, RowMapper<T> rm,Object... parameters) throws SQLException {
+	public <T> T executeQuery(String sql, RowMapper<T> rm,Object... parameters){
 		return executeQuery(sql, rm, createPreparedStatementSetter(parameters));
 	}
 	
-	public <T> List<T> list(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws SQLException {
+	public <T> List<T> list(String sql, RowMapper<T> rm, PreparedStatementSetter pss) throws DataAccessException{
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -60,7 +68,10 @@ public class jdbcTemplate {
 				list.add(rm.mapRow(rs));
 			}
 			return list;
+		} catch(SQLException e){
+			throw new DataAccessException();
 		}finally{
+			try{
 			if(pstmt != null){
 				pstmt.close();
 			}
@@ -70,10 +81,13 @@ public class jdbcTemplate {
 			if(rs != null){
 				rs.close();
 			}
+			}catch(SQLException e){
+				throw new DataAccessException();
+			}
 		}
 	}
 	
-	public <T> List<T> list(String sql, RowMapper<T> rm, Object... parameters) throws SQLException {
+	public <T> List<T> list(String sql, RowMapper<T> rm, Object... parameters){
 		return list(sql, rm, createPreparedStatementSetter(parameters));
 	}
 

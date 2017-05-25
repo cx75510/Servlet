@@ -46,9 +46,9 @@ public class UpdateUserServlet extends HttpServlet{
 		
 		Validator validator = MyValidatorFactory.createValidator();
 		/*
-		 * È¸¿ø°¡ÀÔ¿¡¼­ ¾ÆÀÌµð¿Í ºñ¹Ð¹øÈ£¸¦ ÀÔ·ÂÇÏ°í ÀÌ¸§À» ÀÔ·ÂÇÏÁö ¾Ê¾ÒÀ» ¶§
-		 * userID°¡ ÀÌ¹Ì Á¸ÀçÇØ¼­ °³ÀÎÁ¤º¸ ¼öÁ¤À¸·Î ÀÎ½ÄÇÔ
-		 * user¸¦ ³Ñ±â±â¶§¹®¿¡ 
+		 * È¸ï¿½ï¿½ï¿½ï¿½ï¿½Ô¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ìµï¿½ï¿½ ï¿½ï¿½Ð¹ï¿½È£ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½Ï°ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½Ô·ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾ï¿½ï¿½ï¿½ ï¿½ï¿½
+		 * userIDï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ø¼ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î½ï¿½ï¿½ï¿½
+		 * userï¿½ï¿½ ï¿½Ñ±ï¿½â¶§ï¿½ï¿½ï¿½ï¿½ 
 		 */
 		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
 		if(constraintViolations.size() > 0){
@@ -60,12 +60,9 @@ public class UpdateUserServlet extends HttpServlet{
 		}
 		
 		UserDAO userDAO = new UserDAO();
-		try {
-			userDAO.updateUser(user);
-		} catch (SQLException e) {
-		}
+		userDAO.updateUser(user);
 		
-		response.sendRedirect("/"); // redirect ¹æ½ÄÀ¸·Î ÀÌµ¿
+		response.sendRedirect("/"); // redirect ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ìµï¿½
 	}
 	
 	private void forwardJSP(HttpServletRequest request, HttpServletResponse response, String errorMessage)

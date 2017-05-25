@@ -1,26 +1,26 @@
 package net.test.user;
 
-import java.sql.SQLException;
 import java.util.List;
 
-import net.test.support.RowMapper;
-import net.test.support.jdbcTemplate;
+import net.test.support.jdbc.RowMapper;
+import net.test.support.jdbc.jdbcTemplate;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class UserDAO {
-	public void addUser(User user) throws SQLException {
+	public void addUser(User user){
 		jdbcTemplate template = new jdbcTemplate();
 		String sql = "insert into users values(?,?,?,?)";
 		template.executeUpdate(sql, user.getUserId(), user.getPassword(),
 				user.getName(), user.getEmail());
 	}
 
-	public User findByUserId(String userId) throws SQLException {
+	public User findByUserId(String userId){
 		RowMapper<User> rm = new RowMapper<User>(){
 
 			@Override
-			public User mapRow(ResultSet rs) throws SQLException {
+			public User mapRow(ResultSet rs) throws SQLException{
 				return new User(
 						rs.getString("userId"),
 						rs.getString("password"),
@@ -34,24 +34,24 @@ public class UserDAO {
 		return template.executeQuery(sql,rm,userId);
 	}
 
-	public void removeUser(String userId) throws SQLException {
+	public void removeUser(String userId){
 		jdbcTemplate template = new jdbcTemplate();
 		String sql = "delete from USERS where userId = ?";
 		template.executeUpdate(sql,userId);
 	}
 
-	public void updateUser(User user) throws SQLException {
+	public void updateUser(User user){
 		jdbcTemplate template = new jdbcTemplate();
 		String sql = "update USERS set password= ? , name= ?, email= ? where userId=?";
 		template.executeUpdate(sql,user.getPassword(), user.getName(), user.getEmail(),
 				user.getUserId());
 	}
 
-	public List<User> findUsers() throws SQLException {
+	public List<User> findUsers(){
 		RowMapper<User> rm = new RowMapper<User>(){
 
 			@Override
-			public User mapRow(ResultSet rs) throws SQLException {
+			public User mapRow(ResultSet rs) throws SQLException{
 				return new User(
 						rs.getString("userId"),
 						rs.getString("password"),

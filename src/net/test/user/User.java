@@ -29,7 +29,7 @@ public class User {
 	@Email
 	private String email;
 
-	// »ý¼ºÀÚ
+	// ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	public User(String userId, String password, String name, String email) {
 		super();
 		this.userId = userId;
@@ -86,11 +86,7 @@ public class User {
 	
 	public static boolean login(String userId, String password) throws UserNotFoundException, PasswordMismatchException {
 		UserDAO userDAO = new UserDAO();
-		User user = null;
-		try {
-			user = userDAO.findByUserId(userId);
-		} catch (SQLException e) {
-		}
+		User user = userDAO.findByUserId(userId);
 		
 		if(user == null){
 			throw new UserNotFoundException();
